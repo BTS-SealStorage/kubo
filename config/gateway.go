@@ -1,6 +1,9 @@
 package config
 
-const DefaultInlineDNSLink = false
+const (
+	DefaultInlineDNSLink    = false
+	DefaultExposeRoutingAPI = false
+)
 
 type GatewaySpec struct {
 	// Paths is explicit list of path prefixes that should be handled by
@@ -59,4 +62,8 @@ type Gateway struct {
 	// PublicGateways configures behavior of known public gateways.
 	// Each key is a fully qualified domain name (FQDN).
 	PublicGateways map[string]*GatewaySpec
+
+	// ExposeRoutingAPI configures the gateway to expose a Routing v1 HTTP Server
+	// under /routing/v1: https://specs.ipfs.tech/routing/routing-v1/.
+	ExposeRoutingAPI Flag
 }
