@@ -37,6 +37,7 @@ type Config struct {
 	Plugins      Plugins
 	Pinning      Pinning
 
+	S3Cred   S3Cred
 	Internal Internal // experimental/unstable options
 }
 

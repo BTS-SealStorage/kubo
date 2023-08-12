@@ -17,7 +17,6 @@ import (
 	"context"
 	"errors"
 	"fmt"
-
 	bserv "github.com/ipfs/boxo/blockservice"
 	blockstore "github.com/ipfs/boxo/blockstore"
 	coreiface "github.com/ipfs/boxo/coreiface"
@@ -30,6 +29,7 @@ import (
 	pin "github.com/ipfs/boxo/pinning/pinner"
 	provider "github.com/ipfs/boxo/provider"
 	offlineroute "github.com/ipfs/boxo/routing/offline"
+	s3conn "github.com/ipfs/boxo/s3connection"
 	ipld "github.com/ipfs/go-ipld-format"
 	pubsub "github.com/libp2p/go-libp2p-pubsub"
 	record "github.com/libp2p/go-libp2p-record"
@@ -72,6 +72,8 @@ type CoreAPI struct {
 	ipldPathResolver   pathresolver.Resolver
 	unixFSPathResolver pathresolver.Resolver
 
+	s3conn *s3conn.S3Connection
+
 	provider provider.System
 
 	pubSub *pubsub.PubSub
@@ -92,6 +94,10 @@ func NewCoreAPI(n *core.IpfsNode, opts ...options.ApiOption) (coreiface.CoreAPI,
 	}
 
 	return (&CoreAPI{nd: n, parentOpts: *parentOpts}).WithOptions(opts...)
+}
+
+func (api *CoreAPI) S3Connection() coreiface.S3ConnectionAPI {
+	return (*S3connAPI)(api)
 }
 
 // Unixfs returns the UnixfsAPI interface implementation backed by the go-ipfs node
@@ -191,6 +197,7 @@ func (api *CoreAPI) WithOptions(opts ...options.ApiOption) (coreiface.CoreAPI, e
 		dnsResolver:        n.DNSResolver,
 		ipldPathResolver:   n.IPLDPathResolver,
 		unixFSPathResolver: n.UnixFSPathResolver,
+		s3conn:             n.S3Connection,
 
 		provider: n.Provider,
 

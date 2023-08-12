@@ -12,6 +12,7 @@ package core
 import (
 	"context"
 	"encoding/json"
+	"github.com/ipfs/boxo/s3connection"
 	"io"
 	"time"
 
@@ -90,6 +91,7 @@ type IpfsNode struct {
 	Discovery            mdns.Service              `optional:"true"`
 	FilesRoot            *mfs.Root
 	RecordValidator      record.Validator
+	S3Connection         *s3connection.S3Connection
 
 	// Online
 	PeerHost           p2phost.Host               `optional:"true"` // the network host (server+client)

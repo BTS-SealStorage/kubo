@@ -23,7 +23,7 @@ var s3StoreCmd = &cmds.Command{
 }
 
 var s3Add = &cmds.Command{
-	Status: cmds.Deprecated,
+	//Status: cmds.Deprecated,
 	Helptext: cmds.HelpText{
 		Tagline: "Add S3 object via urlstore.",
 		LongDescription: `
@@ -83,7 +83,12 @@ settings for 'ipfs add'.
 			opts = append(opts, options.Unixfs.Layout(options.TrickleLayout))
 		}
 
-		file := files.NewWebFile(url)
+		nd, err := cmdenv.GetNode(env)
+		if err != nil {
+			return err
+		}
+
+		file := files.NewS3File(*nd.S3Connection, url)
 
 		path, err := api.Unixfs().Add(req.Context, file, opts...)
 		if err != nil {
