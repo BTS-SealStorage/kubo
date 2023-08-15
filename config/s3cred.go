@@ -1,7 +1,10 @@
 package config
 
-import "github.com/ipfs/boxo/files"
-
-type S3Cred struct {
-	S3Cred files.S3Credential
+type S3Credential struct {
+	id                    string
+	aws_access_key_id     string
+	aws_secret_access_key string
+	region                string
+	bucket                string
+	endpoint              string
 }

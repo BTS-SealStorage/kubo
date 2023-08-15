@@ -83,12 +83,12 @@ settings for 'ipfs add'.
 			opts = append(opts, options.Unixfs.Layout(options.TrickleLayout))
 		}
 
-		nd, err := cmdenv.GetNode(env)
+		node, err := cmdenv.GetNode(env)
 		if err != nil {
 			return err
 		}
 
-		file := files.NewS3File(*nd.S3Connection, url)
+		file := files.NewS3File(node.S3Connection, url)
 
 		path, err := api.Unixfs().Add(req.Context, file, opts...)
 		if err != nil {

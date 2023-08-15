@@ -37,8 +37,8 @@ type Config struct {
 	Plugins      Plugins
 	Pinning      Pinning
 
-	S3Cred   S3Cred
-	Internal Internal // experimental/unstable options
+	S3Credential S3Credential
+	Internal     Internal // experimental/unstable options
 }
 
 const (
