@@ -193,7 +193,7 @@ func (api *CoreAPI) WithOptions(opts ...options.ApiOption) (coreiface.CoreAPI, e
 		dnsResolver:        n.DNSResolver,
 		ipldPathResolver:   n.IPLDPathResolver,
 		unixFSPathResolver: n.UnixFSPathResolver,
-		s3backend:          n.S3Connection,
+		s3backend:          &n.S3Connection,
 
 		provider: n.Provider,
 

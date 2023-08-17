@@ -1,10 +1,10 @@
 package config
 
 type S3Credential struct {
-	id                    string
-	aws_access_key_id     string
-	aws_secret_access_key string
-	region                string
-	bucket                string
-	endpoint              string
+	ID              string `json:"id,omitempty"`
+	AccessKeyID     string `json:"aws_access_key_id,omitempty"`
+	SecretAccessKey string `json:"aws_secret_access_key,omitempty"`
+	Region          string `json:"region,omitempty"`
+	Bucket          string `json:"bucket,omitempty"`
+	Endpoint        string `json:"endpoint,omitempty"`
 }

@@ -2,11 +2,9 @@ package commands
 
 import (
 	"fmt"
+	cmdenv "github.com/ipfs/kubo/core/commands/cmdenv"
 	"io"
 	"net/url"
-
-	filestore "github.com/ipfs/boxo/filestore"
-	cmdenv "github.com/ipfs/kubo/core/commands/cmdenv"
 
 	"github.com/ipfs/boxo/coreiface/options"
 	"github.com/ipfs/boxo/files"
@@ -18,7 +16,7 @@ var s3StoreCmd = &cmds.Command{
 		Tagline: "Interact with s3store.",
 	},
 	Subcommands: map[string]*cmds.Command{
-		"add": urlAdd,
+		"add": s3Add,
 	},
 }
 
@@ -41,7 +39,7 @@ settings for 'ipfs add'.
 		cmds.BoolOption(pinOptionName, "Pin this object when adding.").WithDefault(true),
 	},
 	Arguments: []cmds.Argument{
-		cmds.StringArg("s3endpoint", true, false, "S3 endpoint URL to find object"),
+		//cmds.StringArg("s3endpoint", true, false, "S3 endpoint URL to find object"),
 		cmds.StringArg("url", true, false, "object URL to add to IPFS"),
 	},
 	Type: &BlockStat{},
@@ -49,8 +47,8 @@ settings for 'ipfs add'.
 	Run: func(req *cmds.Request, res cmds.ResponseEmitter, env cmds.Environment) error {
 		//log.Error("The 'ipfs urlstore' command is deprecated, please use 'ipfs add --nocopy --cid-version=1")
 
-		urlString := req.Arguments[1]
-		if !filestore.IsURL(req.Arguments[1]) {
+		urlString := req.Arguments[0]
+		if !IsS3URL(urlString) {
 			return fmt.Errorf("unsupported url syntax: %s", urlString)
 		}
 
@@ -88,7 +86,7 @@ settings for 'ipfs add'.
 			return err
 		}
 
-		file := files.NewS3File(node.S3Connection, url)
+		file := files.NewS3File(&node.S3Connection, url)
 
 		path, err := api.Unixfs().Add(req.Context, file, opts...)
 		if err != nil {

@@ -109,6 +109,18 @@ func (cfg *BuildCfg) options(ctx context.Context) (fx.Option, *cfg.Config) {
 		return cfg.Routing
 	})
 
+	repoConfig, err := cfg.Repo.Config()
+	if err != nil {
+		return fx.Error(err), nil
+	}
+
+	s3option := fx.Provide(func() S3Connection {
+		return S3Connection{
+			cred: repoConfig.S3Credential,
+			conn: nil,
+		}
+	})
+
 	conf, err := cfg.Repo.Config()
 	if err != nil {
 		return fx.Error(err), nil
@@ -119,6 +131,7 @@ func (cfg *BuildCfg) options(ctx context.Context) (fx.Option, *cfg.Config) {
 		hostOption,
 		routingOption,
 		metricsCtx,
+		s3option,
 	), conf
 }
 

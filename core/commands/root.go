@@ -123,6 +123,7 @@ var CommandsDaemonCmd = CommandsCmd(Root)
 
 var rootSubcommands = map[string]*cmds.Command{
 	"add":       AddCmd,
+	"s3store":   s3StoreCmd,
 	"bitswap":   BitswapCmd,
 	"block":     BlockCmd,
 	"cat":       CatCmd,
